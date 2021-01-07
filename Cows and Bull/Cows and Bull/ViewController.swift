@@ -27,6 +27,8 @@ class ViewController: NSViewController, NSTableViewDelegate,NSTableViewDataSourc
     }
     
     @IBAction func submitGuess(_ sender: NSButton) {
+        
+//        validate user input
         let guessString = guess.stringValue
         guard Set(guessString).count == 4 else { return }
         let badCharacters = CharacterSet(charactersIn: "0123456789").inverted
@@ -34,8 +36,18 @@ class ViewController: NSViewController, NSTableViewDelegate,NSTableViewDataSourc
             return
         }
         
+//        insert data for tableiveiew
         guesses.insert(guessString, at: 0)
         tableView.insertRows(at: IndexSet(integer: 0), withAnimation: .slideDown)
+//        show alert if user wins
+        let resultString = result(for: guessString)
+        if resultString.contains("4b") {
+            let alert = NSAlert()
+            alert.messageText = "You win"
+            alert.informativeText = "Congraulations click ok to play again"
+            alert.runModal()
+            startNewGame()
+        }
     }
     
     //MARK:- Table View methods
@@ -84,6 +96,7 @@ class ViewController: NSViewController, NSTableViewDelegate,NSTableViewDataSourc
         for x in 0..<4 {
             answer.append(String(numbers.removeLast()))
         }
+        print(answer)
         tableView.reloadData()
     }
     
