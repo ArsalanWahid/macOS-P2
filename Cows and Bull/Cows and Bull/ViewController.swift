@@ -27,6 +27,15 @@ class ViewController: NSViewController, NSTableViewDelegate,NSTableViewDataSourc
     }
     
     @IBAction func submitGuess(_ sender: NSButton) {
+        let guessString = guess.stringValue
+        guard Set(guessString).count == 4 else { return }
+        let badCharacters = CharacterSet(charactersIn: "0123456789").inverted
+        guard guessString.rangeOfCharacter(from: badCharacters) == nil else {
+            return
+        }
+        
+        guesses.insert(guessString, at: 0)
+        tableView.insertRows(at: IndexSet(integer: 0), withAnimation: .slideDown)
     }
     
     //MARK:- Table View methods
